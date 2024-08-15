@@ -1,37 +1,42 @@
+mod cli;
 mod common_ports;
 mod error;
 mod model;
+mod modules;
 mod ports;
 mod subdomains;
 
-use anyhow::anyhow;
-use rayon::prelude::*;
-use reqwest::{blocking::Client, redirect};
-use std::time::Duration;
-use subdomains::enumerate;
+use std::env;
 
-fn main() -> Result<(), anyhow::Error> {
-    let args: Vec<String> = std::env::args().collect();
-    if args.len() != 2 {
-        return Err(anyhow!(error::Error::CliUsage));
+use clap::{self, Parser, Subcommand};
+use env_logger;
+use tokio;
+
+#[derive(Parser)]
+#[command(version, about, long_about=None)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    /// Lists all modules
+    Modules,
+    /// Runs a TCP Connect scan against the target
+    Scan {
+        /// Host to scan
+        target: String,
+    },
+}
+
+#[tokio::main]
+async fn main() -> Result<(), anyhow::Error> {
+    unsafe { env::set_var("RUST_LOG", "info") };
+    env_logger::init();
+    let cli = Cli::parse();
+    match cli.command {
+        Commands::Modules => cli::modules(),
+        Commands::Scan { target } => cli::scan(target).await,
     }
-    let http_client = Client::builder()
-        .redirect(redirect::Policy::limited(4))
-        .timeout(Duration::from_secs(5))
-        .build()?;
-    let pool = rayon::ThreadPoolBuilder::new().num_threads(256).build()?;
-    pool.install(|| {
-        let scan_result: Vec<model::Subdomain> = enumerate(&http_client, &args[1])
-            .unwrap()
-            .into_par_iter()
-            .map(ports::scan_ports)
-            .collect();
-        for subdomain in scan_result {
-            println!("{}:", subdomain.domain);
-            for port in subdomain.open_ports {
-                println!("\t{}", port.port);
-            }
-        }
-    });
-    Ok(())
 }
