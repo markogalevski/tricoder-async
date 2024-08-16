@@ -1,8 +1,9 @@
 use crate::error::Error;
 use async_trait::async_trait;
 use http::{
-    DirectoryListingDisclosure, DotenvDisclosure, DsStoreDisclosure, EtcdUnauthenticatedAccess,
-    GitHeadDisclosure, GitlabOpenRegistrations, KibanaUnauthenticatedAccess,
+    Cve2017_9506, Cve2018_7600, DirectoryListingDisclosure, DotenvDisclosure, DsStoreDisclosure,
+    EtcdUnauthenticatedAccess, GitHeadDisclosure, GitlabOpenRegistrations,
+    KibanaUnauthenticatedAccess,
 };
 use reqwest::Client;
 use subdomains::{CrtSh, WebArchive};
@@ -19,6 +20,8 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
         Box::new(EtcdUnauthenticatedAccess::new()),
         Box::new(GitHeadDisclosure::new()),
         Box::new(KibanaUnauthenticatedAccess::new()),
+        Box::new(Cve2017_9506::new()),
+        Box::new(Cve2018_7600::new()),
     ]
 }
 
@@ -36,6 +39,8 @@ pub enum HttpFinding {
     EtcdUnauthenticatedAccess(String),
     KibanaUnauthenticatedAccess(String),
     DirectoryListingDisclosure(String),
+    Cve2017_9506(String),
+    Cve2018_7600(String),
 }
 
 pub trait Module {

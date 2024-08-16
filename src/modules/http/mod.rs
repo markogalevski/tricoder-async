@@ -12,3 +12,7 @@ mod gitlab_open_registrations;
 pub use gitlab_open_registrations::GitlabOpenRegistrations;
 mod kibana_unauthenticated_access;
 pub use kibana_unauthenticated_access::KibanaUnauthenticatedAccess;
+mod cve_2017_9506;
+pub use cve_2017_9506::Cve2017_9506;
+mod cve_2018_7600;
+pub use cve_2018_7600::Cve2018_7600;
