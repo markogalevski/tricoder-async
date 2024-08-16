@@ -37,14 +37,13 @@ impl SubdomainModule for CrtSh {
 
         let subdomains: HashSet<String> = entries
             .into_iter()
-            .map(|entry| {
+            .flat_map(|entry| {
                 entry
                     .name_value
                     .split('\n')
                     .map(|subdomain| subdomain.trim().to_owned())
                     .collect::<Vec<String>>()
             })
-            .flatten()
             .filter(|subdomain| !subdomain.contains('*'))
             .collect();
         Ok(subdomains.into_iter().collect())

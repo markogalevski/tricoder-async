@@ -5,7 +5,7 @@ pub struct KibanaUnauthenticatedAccess {}
 
 impl Module for KibanaUnauthenticatedAccess {
     fn name(&self) -> String {
-        "http/KibanaUnauthenticatedAccess".to_owned()
+        "http/kibana_unauthenticated_access".to_owned()
     }
 
     fn description(&self) -> String {
@@ -20,7 +20,7 @@ impl HttpModule for KibanaUnauthenticatedAccess {
         http_client: &reqwest::Client,
         endpoint: &str,
     ) -> Result<Option<crate::modules::HttpFinding>, crate::error::Error> {
-        let url = format!("{endpoint}");
+        let url = endpoint.to_owned();
         let res = http_client.get(&url).send().await?;
         if !res.status().is_success() {
             return Ok(None);

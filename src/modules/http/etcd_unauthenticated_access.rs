@@ -5,11 +5,11 @@ pub struct EtcdUnauthenticatedAccess {}
 
 impl Module for EtcdUnauthenticatedAccess {
     fn name(&self) -> String {
-        "http/EtcdUnauthenticatedAccess".to_owned()
+        "http/etcd_unauthenticated_access".to_owned()
     }
 
     fn description(&self) -> String {
-        "Checks for unauthenticated access possibilities on an etcd database".to_owned()
+        "Check for unauthenticated access possibilities on an etcd database".to_owned()
     }
 }
 

@@ -12,7 +12,7 @@ pub struct DirectoryListingDisclosure {
 
 impl Module for DirectoryListingDisclosure {
     fn name(&self) -> String {
-        "http/DirectoryListingDisclosure".to_owned()
+        "http/dir_listing_disclosure".to_owned()
     }
 
     fn description(&self) -> String {

@@ -27,11 +27,11 @@ impl HttpModule for DsStoreDisclosure {
 
 impl Module for DsStoreDisclosure {
     fn name(&self) -> String {
-        "http/DsStoreDisclosure".to_owned()
+        "http/.ds_store_disclosure".to_owned()
     }
 
     fn description(&self) -> String {
-        "Checks if .DS_Store (Mac) files have been disclosed".to_owned()
+        "Check if .DS_Store (Mac) files have been disclosed".to_owned()
     }
 }
 

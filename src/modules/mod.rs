@@ -26,7 +26,9 @@ pub fn all_subdomains_modules() -> Vec<Box<dyn SubdomainModule>> {
     vec![Box::new(CrtSh::new()), Box::new(WebArchive::new())]
 }
 
-enum HttpFinding {
+#[derive(Debug)]
+#[allow(dead_code)]
+pub enum HttpFinding {
     GitlabOpenRegistrations(String),
     GitHeadDisclosure(String),
     DotenvDisclosure(String),
@@ -53,4 +55,22 @@ pub trait HttpModule: Module {
         http_client: &Client,
         endpoint: &str,
     ) -> Result<Option<HttpFinding>, Error>;
+}
+
+#[derive(Debug, Clone)]
+pub struct Subdomain {
+    pub domain: String,
+    pub open_ports: Vec<Port>,
+}
+
+#[derive(Debug, Clone)]
+pub struct Port {
+    pub port: u16,
+    pub is_open: bool,
+}
+
+impl std::fmt::Display for Port {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.port)
+    }
 }

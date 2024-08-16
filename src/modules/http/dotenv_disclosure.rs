@@ -24,11 +24,11 @@ impl HttpModule for DotenvDisclosure {
 
 impl Module for DotenvDisclosure {
     fn name(&self) -> String {
-        "http/DotenvDisclosure".to_owned()
+        "http/.env_disclosure".to_owned()
     }
 
     fn description(&self) -> String {
-        "Checks if .env files have been disclosed".to_owned()
+        "Check if .env files have been disclosed".to_owned()
     }
 }
 

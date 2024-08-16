@@ -1,16 +1,13 @@
 mod cli;
 mod common_ports;
+mod dns;
 mod error;
-mod model;
 mod modules;
 mod ports;
-mod subdomains;
 
 use std::env;
 
 use clap::{self, Parser, Subcommand};
-use env_logger;
-use tokio;
 
 #[derive(Parser)]
 #[command(version, about, long_about=None)]
@@ -30,13 +27,12 @@ enum Commands {
     },
 }
 
-#[tokio::main]
-async fn main() -> Result<(), anyhow::Error> {
+fn main() -> Result<(), anyhow::Error> {
     unsafe { env::set_var("RUST_LOG", "info") };
     env_logger::init();
     let cli = Cli::parse();
     match cli.command {
         Commands::Modules => cli::modules(),
-        Commands::Scan { target } => cli::scan(target).await,
+        Commands::Scan { target } => cli::scan(&target),
     }
 }

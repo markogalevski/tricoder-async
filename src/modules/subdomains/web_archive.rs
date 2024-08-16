@@ -15,7 +15,7 @@ impl Module for WebArchive {
     }
 
     fn description(&self) -> String {
-        "Check for subdomains using the web archives".to_owned()
+        "Use web.archive.org to search for subdomains".to_owned()
     }
 }
 
@@ -35,9 +35,12 @@ impl SubdomainModule for WebArchive {
             .into_iter()
             .flatten()
             .filter_map(|url| {
+                if url == "original" {
+                    return None;
+                }
                 Url::parse(&url)
                     .map_err(|e| {
-                        log::error!("{}: error parsing url {e}", self.name());
+                        log::error!("{}: error parsing url {url}: {e}", self.name());
                         e
                     })
                     .ok()

@@ -3,10 +3,7 @@ use std::{
     time::Duration,
 };
 
-use crate::{
-    common_ports::MOST_COMMON_PORTS_100,
-    model::{Port, Subdomain},
-};
+use crate::{common_ports::MOST_COMMON_PORTS_100, modules::Port, modules::Subdomain};
 use futures::StreamExt;
 use tokio::net::TcpStream;
 
